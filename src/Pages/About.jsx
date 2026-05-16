@@ -78,7 +78,7 @@ export default function AboutContent() {
 
             <div className="absolute bottom-5 left-5 bg-white p-4 rounded-2xl shadow-lg">
               <h2 className="font-bold text-2xl text-blue-600">
-                500+
+                300+
               </h2>
               <p className="text-sm text-gray-500">
                 Graduates
