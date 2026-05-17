@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
+import ScrollToTop from "./Components/ScrollToTop";
 
 import Hero from "./Pages/Hero";
 import About from "./Pages/About";
@@ -12,10 +14,10 @@ import Blog from "./Pages/Blog";
 import ApplyNow from "./Pages/ApplyNow";
 import Contact from "./Pages/Contact";
 
-
 export default function App() {
   return (
     <>
+      <ScrollToTop />
       <Navbar />
 
       <Routes>
@@ -29,6 +31,8 @@ export default function App() {
         <Route path="/apply" element={<ApplyNow />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
+
+      <Footer />
     </>
   );
 }

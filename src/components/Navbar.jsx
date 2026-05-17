@@ -3,32 +3,25 @@ import { NavLink } from "react-router-dom";
 import {
   FaBars,
   FaTimes,
-  FaGlobe,
+  FaEnvelope,
+  FaMapMarkerAlt,
+ 
+  FaSearch,
   FaChevronDown,
-  FaCheck,
 } from "react-icons/fa";
-import { MdDarkMode, MdLightMode } from "react-icons/md";
+
 import logo from "../assets/logoY.jpg";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
-  const [language, setLanguage] = useState(
-    localStorage.getItem("language") || "English"
-  );
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   useEffect(() => {
-    const root = document.documentElement;
+    document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
 
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isMenuOpen]);
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -41,173 +34,183 @@ export default function Navbar() {
     { name: "Contact", path: "/contact" },
   ];
 
-  const languages = ["English", "Somali"];
-
-  const handleLanguage = (lang) => {
-    setLanguage(lang);
-    localStorage.setItem("language", lang);
-    setIsLangOpen(false);
-  };
-
   const linkClass = ({ isActive }) =>
-    `relative whitespace-nowrap px-1 py-2 text-[13px] xl:text-[14px] font-extrabold tracking-wide transition-all duration-300
-    ${
-      isActive
-        ? "text-white"
-        : "text-blue-100 hover:text-white"
-    }
-    after:absolute after:left-0 after:-bottom-1 after:h-[3px] after:w-0 after:rounded-full 
-    after:bg-white after:transition-all after:duration-300 hover:after:w-full
-    ${isActive ? "after:w-full" : ""}`;
+    `flex items-center gap-1 whitespace-nowrap text-[15px] font-black transition-all duration-300 xl:text-[16px] ${
+      isActive ? "text-[#063B63]" : "text-black hover:text-[#063B63]"
+    }`;
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full bg-[#063B63] shadow-xl shadow-blue-950/20">
-      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-3 lg:px-6 xl:px-8">
-        {/* Logo */}
-        <NavLink to="/" className="flex shrink-0 items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white p-1 shadow-lg">
-            <img
-              src={logo}
-              alt="Yool Academy Logo"
-              className="h-full w-full rounded-xl object-contain"
-            />
-          </div>
-
-          <div className="leading-tight">
-            <h1 className="text-lg font-black tracking-tight text-white xl:text-xl">
-              Yool Academy
-            </h1>
-            <p className="hidden text-[11px] font-semibold text-blue-100 xl:block">
-              Skills • Training • Consultancy
-            </p>
-          </div>
-        </NavLink>
-
-        {/* Desktop Menu */}
-        <nav className="hidden flex-1 items-center justify-center gap-4 lg:flex xl:gap-6">
-          {navLinks.map((link) => (
-            <NavLink key={link.name} to={link.path} className={linkClass}>
-              {link.name}
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* Desktop Actions */}
-        <div className="hidden shrink-0 items-center gap-2 lg:flex">
-          {/* Language */}
-          <div className="relative">
-            <button
-              onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-bold text-white backdrop-blur-md transition hover:bg-white hover:text-[#063B63]"
+    <header className="fixed left-0 top-0 z-50 w-full bg-white">
+      {/* TOP BAR */}
+      <div className="bg-[#31378F] text-white">
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-2 text-[10px] font-black sm:text-xs md:text-sm lg:px-10">
+          <div className="flex items-center gap-3 sm:gap-5">
+            <a
+              href="mailto:yoolacademy4@gmail.com"
+              className="flex items-center gap-1.5 transition hover:text-blue-100"
             >
-              <FaGlobe />
-              {language}
-              <FaChevronDown className="text-xs" />
-            </button>
+              <FaEnvelope />
+              <span className="hidden sm:inline">yoolacademy4@gmail.com</span>
+              <span className="sm:hidden">Email</span>
+            </a>
 
-            {isLangOpen && (
-              <div className="absolute right-0 mt-3 w-44 overflow-hidden rounded-2xl bg-white p-2 shadow-2xl">
-                {languages.map((lang) => (
-                  <button
-                    key={lang}
-                    onClick={() => handleLanguage(lang)}
-                    className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-bold text-slate-700 transition hover:bg-blue-50 hover:text-[#063B63]"
-                  >
-                    {lang}
-                    {language === lang && <FaCheck className="text-blue-600" />}
-                  </button>
-                ))}
-              </div>
-            )}
+            <span className="flex items-center gap-1.5">
+              <FaMapMarkerAlt />
+              <span>Mogadishu, Somalia</span>
+            </span>
           </div>
 
-          {/* Dark Mode */}
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/10 text-xl text-white transition hover:bg-white hover:text-[#063B63]"
-            aria-label="Toggle dark mode"
-          >
-            {theme === "dark" ? <MdLightMode /> : <MdDarkMode />}
-          </button>
+          <div className="flex items-center gap-3 sm:gap-5">
+           
 
-          <NavLink
-            to="/apply"
-            className="whitespace-nowrap rounded-full bg-white px-5 py-2.5 text-sm font-black text-[#063B63] shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-50 hover:shadow-xl"
-          >
-            Apply Now
-          </NavLink>
-        </div>
+           
 
-        {/* Mobile Buttons */}
-        <div className="flex items-center gap-2 lg:hidden">
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-xl text-white"
-          >
-            {theme === "dark" ? <MdLightMode /> : <MdDarkMode />}
-          </button>
-
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#063B63]"
-          >
-            {isMenuOpen ? <FaTimes /> : <FaBars />}
-          </button>
+            
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="border-t border-white/10 bg-[#063B63] px-4 pb-5 pt-4 shadow-2xl lg:hidden">
-          <nav className="flex flex-col gap-1">
+      {/* MAIN NAVBAR */}
+      <div className="border-b border-slate-100 bg-white shadow-sm">
+        <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-4 lg:px-10">
+          {/* LOGO */}
+          <NavLink to="/" className="flex items-center gap-3">
+            <img
+              src={logo}
+              alt="Yool Academy Logo"
+              className="h-14 w-14 object-contain sm:h-16 sm:w-16"
+            />
+
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-black leading-none text-[#063B63] lg:text-2xl">
+                Yool Academy
+              </h1>
+              <p className="mt-1 text-xs font-bold text-[#2196F3]">
+                Skills • Training • Consultancy
+              </p>
+            </div>
+          </NavLink>
+
+          {/* DESKTOP NAV */}
+          <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
             {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                onClick={() => setIsMenuOpen(false)}
-                className={({ isActive }) =>
-                  `rounded-xl px-4 py-3 text-base font-bold transition-all duration-300 ${
-                    isActive
-                      ? "bg-white text-[#063B63]"
-                      : "text-blue-100 hover:bg-white/10 hover:text-white"
-                  }`
-                }
-              >
+              <NavLink key={link.name} to={link.path} className={linkClass}>
                 {link.name}
+                <FaChevronDown className="text-[10px]" />
               </NavLink>
             ))}
+          </nav>
 
-            {/* Mobile Language */}
-            <div className="mt-3 rounded-2xl bg-white/10 p-2">
-              <p className="mb-2 px-3 text-xs font-bold uppercase tracking-wider text-blue-100">
-                Language
-              </p>
-
-              <div className="grid grid-cols-2 gap-2">
-                {languages.map((lang) => (
-                  <button
-                    key={lang}
-                    onClick={() => handleLanguage(lang)}
-                    className={`rounded-xl px-4 py-3 text-sm font-black transition ${
-                      language === lang
-                        ? "bg-white text-[#063B63]"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
-                  >
-                    {lang}
-                  </button>
-                ))}
-              </div>
-            </div>
+          {/* DESKTOP RIGHT */}
+          <div className="hidden items-center gap-5 lg:flex">
+            <button
+              type="button"
+              className="text-lg text-black transition hover:text-[#063B63]"
+              aria-label="Search"
+            >
+              <FaSearch />
+            </button>
 
             <NavLink
               to="/apply"
-              onClick={() => setIsMenuOpen(false)}
-              className="mt-3 rounded-xl bg-white px-4 py-3 text-center text-base font-black text-[#063B63] shadow-lg"
+              className="rounded-full bg-[#063B63] px-6 py-3 text-sm font-black text-white transition hover:bg-[#2196F3]"
             >
               Apply Now
             </NavLink>
-          </nav>
+          </div>
+
+          {/* MOBILE RIGHT */}
+          <div className="flex items-center gap-5 lg:hidden">
+            <button
+              type="button"
+              className="text-lg text-black"
+              aria-label="Search"
+            >
+              <FaSearch />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(true)}
+              className="text-xl text-black"
+              aria-label="Open menu"
+            >
+              <FaBars />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* MOBILE SIDE MENU */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-[999] bg-black/55 lg:hidden">
+          <div className="h-full w-[82%] max-w-[340px] bg-white shadow-2xl">
+            {/* MOBILE MENU HEADER */}
+            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-5">
+              <div className="flex items-center gap-3">
+                <img
+                  src={logo}
+                  alt="Yool Academy Logo"
+                  className="h-12 w-12 object-contain"
+                />
+
+                <div>
+                  <h2 className="text-lg font-black text-[#063B63]">
+                    Yool Academy
+                  </h2>
+                  <p className="text-[11px] font-bold text-[#2196F3]">
+                    Skills • Training • Consultancy
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-[#063B63]"
+                aria-label="Close menu"
+              >
+                <FaTimes />
+              </button>
+            </div>
+
+            {/* MOBILE LINKS */}
+            <nav className="px-5 py-5">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between border-b border-slate-100 px-1 py-4 text-[15px] font-bold transition ${
+                      isActive
+                        ? "text-[#063B63]"
+                        : "text-slate-600 hover:text-[#063B63]"
+                    }`
+                  }
+                >
+                  {link.name}
+                  <FaChevronDown className="text-[10px] text-slate-400" />
+                </NavLink>
+              ))}
+
+              <NavLink
+                to="/apply"
+                onClick={() => setIsMenuOpen(false)}
+                className="mt-6 flex items-center justify-center rounded-xl bg-[#063B63] py-4 font-black text-white"
+              >
+                Apply Now
+              </NavLink>
+
+              <NavLink
+                to="/contact"
+                onClick={() => setIsMenuOpen(false)}
+                className="mt-3 flex items-center justify-center rounded-xl border border-[#063B63] py-4 font-black text-[#063B63]"
+              >
+                Contact Us
+              </NavLink>
+            </nav>
+          </div>
         </div>
       )}
     </header>
