@@ -10,24 +10,25 @@ import Consultancy from "./Pages/Consultancy";
 import Events from "./Pages/Events";
 import Blog from "./Pages/Blog";
 import ApplyNow from "./Pages/ApplyNow";
+import Contact from "./Pages/Contact";
+
 
 export default function App() {
   return (
     <>
       <Navbar />
 
-      <main>
-        <Routes>
-          <Route path="/" element={<Hero />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/academy" element={<Academy />} />
-          <Route path="/programs" element={<Programs />} />
-          <Route path="/consultancy" element={<Consultancy />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/apply" element={<ApplyNow />} />
-        </Routes>
-      </main>
+      <Routes>
+        <Route path="/" element={<Hero />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/academy" element={<Academy />} />
+        <Route path="/programs" element={<Programs />} />
+        <Route path="/consultancy" element={<Consultancy />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/apply" element={<ApplyNow />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
     </>
   );
 }
