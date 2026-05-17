@@ -1,105 +1,160 @@
-import React, { useState , useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaBars , FaMoon, FaSun } from "react-icons/fa";
-import imag from "../assets/screen.png"
+import { FaBars, FaMoon, FaSun, FaTimes } from "react-icons/fa";
+import imag from "../assets/screen.png";
+
 export default function Navbar() {
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [theme, setTheme] = useState(true);
-
-  const toggleDarkMode = () => {
-    setTheme(!theme); 
-  };
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "light"
+  );
 
   useEffect(() => {
-    const element = document.documentElement;
-    if (theme) {
-      element.classList.add("dark");
+    const root = document.documentElement;
+
+    if (theme === "dark") {
+      root.classList.add("dark");
     } else {
-      element.classList.remove("dark");
+      root.classList.remove("dark");
     }
+
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
-  
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Academy", path: "/academy" },
+    { name: "Programs", path: "/programs" },
+    { name: "Consultancy", path: "/consultancy" },
+    { name: "Events", path: "/events" },
+    { name: "Blog", path: "/blog" },
+  ];
+
+  const linkClass = ({ isActive }) =>
+    `relative px-1 py-2 text-[15px] font-semibold tracking-wide transition-all duration-300
+    ${
+      isActive
+        ? "text-blue-600 dark:text-blue-400"
+        : "text-slate-700 hover:text-blue-600 dark:text-slate-200 dark:hover:text-blue-400"
+    }
+    after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full 
+    after:bg-gradient-to-r after:from-blue-600 after:to-emerald-500 
+    after:transition-all after:duration-300 hover:after:w-full
+    ${isActive ? "after:w-full" : ""}`;
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white shadow-sm z-50 font-display">
-      
-      <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
-
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-slate-200/70 bg-white/90 font-display shadow-sm backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/90">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-        <img src={imag} alt="" className="w-16 h-14 ml-6" />
+        <NavLink to="/" className="flex items-center gap-3">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-50 to-emerald-50 p-1 shadow-sm dark:from-slate-800 dark:to-slate-900">
+            <img
+              src={imag}
+              alt="Yool Academy Logo"
+              className="h-full w-full rounded-xl object-contain"
+            />
+          </div>
 
-        <h1 className="text-2xl font-bold text-primary">
-          <span className="text-secondary">Yool</span> Academy
-        </h1>
-        </div>
+          <div className="leading-tight">
+            <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white md:text-2xl">
+              <span className="bg-gradient-to-r from-blue-700 to-emerald-600 bg-clip-text text-transparent">
+                Yool
+              </span>{" "}
+              Academy
+            </h1>
+            <p className="hidden text-xs font-medium text-slate-500 dark:text-slate-400 sm:block">
+              Skills • Training • Consultancy
+            </p>
+          </div>
+        </NavLink>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex gap-4 text-sm font-medium forced-colors:text-primary">
-          <NavLink to="/"className={({ isActive }) =>isActive? "text-secondary border-b-2 border-secondary text-xl"
-              : "text-primary hover:text-secondary text-xl"}>Home</NavLink>         
-          <NavLink to="/about" className={({ isActive }) =>isActive? "text-secondary border-b-2 border-secondary text-xl"
-              : "text-primary hover:text-secondary text-xl"}>About</NavLink>
-
-          <NavLink to="/courses"className={({ isActive }) => isActive? "text-secondary border-b-2 border-secondary text-xl"
-             : "text-primary hover:text-secondary text-xl"}>Courses</NavLink>
-          <NavLink to="/consultancy" className={({ isActive }) =>isActive? "text-secondary border-b-2 border-secondary text-xl"
-              : "text-primary hover:text-secondary text-xl"}>Consultancy</NavLink>
-          <NavLink to="/gallery" className={({ isActive }) =>isActive? "text-secondary border-b-2 border-secondary text-xl"
-              : "text-primary hover:text-secondary text-xl"}>Gallery</NavLink>
-          <NavLink to="/blog" className={({ isActive }) =>isActive? "text-secondary border-b-2 border-secondary text-xl"
-              : "text-primary hover:text-secondary text-xl"}>Blog</NavLink>
+        <nav className="hidden items-center gap-7 lg:flex">
+          {navLinks.map((link) => (
+            <NavLink key={link.name} to={link.path} className={linkClass}>
+              {link.name}
+            </NavLink>
+          ))}
         </nav>
 
-        {/* Desktop Buttons */}
-        <div className="flex items-center gap-4"> 
-         <NavLink to="/contact"> <button className="hidden md:flex bg-base hover:bg-secondary transition text-white px-5 py-2 rounded-full text-sm">
-            Contact Us
-          </button> </NavLink>  
+        {/* Desktop Actions */}
+        <div className="hidden items-center gap-3 lg:flex">
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-300 hover:text-blue-600 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-blue-500"
+            aria-label="Toggle dark mode"
+          >
+            {theme === "dark" ? (
+              <FaSun className="text-lg text-yellow-400" />
+            ) : (
+              <FaMoon className="text-lg" />
+            )}
+          </button>
 
-         <div className="flex items-center">
-      <button
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-      >
-        {theme === "dark" ? (
-          <FaSun className="size-6 text-yellow-400 transition-all duration-300" />
-        ) : (
-          <FaMoon className="size-6 text-base transition-all duration-300" />
-        )}
-      </button>
-     </div>
+          <NavLink
+            to="/apply"
+            className="rounded-full bg-gradient-to-r from-blue-700 to-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-700/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-emerald-600/25"
+          >
+            Apply Now
+          </NavLink>
         </div>
-        {/* Mobile Icon */}
-        <FaBars
-          onClick={() => setIsMenuOpen(!isMenuOpen)} className="absolute left-4.5 text-2xl  cursor-pointer md:hidden"/>
 
+        {/* Mobile Actions */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+            aria-label="Toggle dark mode"
+          >
+            {theme === "dark" ? (
+              <FaSun className="text-yellow-400" />
+            ) : (
+              <FaMoon />
+            )}
+          </button>
+
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white transition hover:bg-blue-700 dark:bg-white dark:text-slate-900"
+            aria-label="Open menu"
+          >
+            {isMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg border-t">
+        <div className="border-t border-slate-200 bg-white px-4 pb-5 pt-3 shadow-xl dark:border-slate-800 dark:bg-slate-950 lg:hidden">
+          <nav className="flex flex-col gap-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.name}
+                to={link.path}
+                onClick={() => setIsMenuOpen(false)}
+                className={({ isActive }) =>
+                  `rounded-xl px-4 py-3 text-base font-semibold transition-all duration-300 ${
+                    isActive
+                      ? "bg-blue-50 text-blue-700 dark:bg-slate-800 dark:text-blue-400"
+                      : "text-slate-700 hover:bg-slate-100 hover:text-blue-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
 
-          <nav className="flex flex-col py-4">
-            <a href="/" className="px-6 py-2 hover:text-secondary text-primary">Home</a>
-            <a href="/courses" className="px-6 py-2 hover:text-secondary text-primary">Courses</a>
-            <a href="/about" className="px-6 py-2 hover:text-secondary text-primary">About</a>
-            <a href="/consultancy" className="px-6 py-2 hover:text-secondary text-primary">Consultancy</a>
-            <a href="/gallery" className="px-6 py-2 hover:text-secondary text-primary">Gallery</a>
-            <a href="/blog" className="px-6 pt-2 hover:text-secondary text-primary">Blog</a>
+            <NavLink
+              to="/apply"
+              onClick={() => setIsMenuOpen(false)}
+              className="mt-3 rounded-xl bg-gradient-to-r from-blue-700 to-emerald-600 px-4 py-3 text-center text-base font-bold text-white shadow-lg"
+            >
+              Apply Now
+            </NavLink>
           </nav>
-
-          {/* Buttons inside same panel */}
-            <button className="bg-primary hover:bg-secondary transition text-white px-2 py-1 ml-4 mb-4 rounded-full ">
-              Contact Us</button>
-
         </div>
       )}
-
-     
-
     </header>
   );
 }

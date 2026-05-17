@@ -1,23 +1,33 @@
 import { Routes, Route } from "react-router-dom";
 
+import Navbar from "./Components/Navbar";
+
 import Hero from "./Pages/Hero";
 import About from "./Pages/About";
-import Courses from "./Pages/Courses";
+import Academy from "./Pages/Academy";
+import Programs from "./Pages/Programs";
 import Consultancy from "./Pages/Consultancy";
-import Gallery from "./Pages/Gallery";
+import Events from "./Pages/Events";
 import Blog from "./Pages/Blog";
-import Contact from "./Pages/Contect"; // hubi magaca file-ka
+import ApplyNow from "./Pages/ApplyNow";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Hero />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/courses" element={<Courses />} />
-      <Route path="/consultancy" element={<Consultancy />} />
-      <Route path="/gallery" element={<Gallery />} />
-      <Route path="/blog" element={<Blog />} />
-      <Route path="/contact" element={<Contact />} />
-    </Routes>
+    <>
+      <Navbar />
+
+      <main>
+        <Routes>
+          <Route path="/" element={<Hero />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/academy" element={<Academy />} />
+          <Route path="/programs" element={<Programs />} />
+          <Route path="/consultancy" element={<Consultancy />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/apply" element={<ApplyNow />} />
+        </Routes>
+      </main>
+    </>
   );
 }
